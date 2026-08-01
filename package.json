@@ -1,0 +1,39 @@
+{
+	"name": "@unveil/vk",
+	"version": "0.1.0",
+	"description": "",
+	"type": "module",
+	"exports": {
+		".": "./dist/index.mjs",
+		"./package.json": "./package.json"
+	},
+	"types": "./dist/index.d.mts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"test": "vitest",
+		"check": "biome check",
+		"check:fix": "biome check --write",
+		"dev": "tsdown --watch",
+		"build": "tsdown"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "^11.1.2",
+			"onFail": "download"
+		}
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.6",
+		"@types/node": "^26.1.2",
+		"publint": "^0.3.22",
+		"tsdown": "^0.22.14",
+		"typescript": "^6.0.3",
+		"vitest": "^4.1.10"
+	}
+}
