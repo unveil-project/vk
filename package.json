@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"description": "Automation-pattern analysis for GitHub accounts",
 	"type": "module",
+	"packageManager": "pnpm@11.22.0",
 	"exports": {
 		".": "./dist/index.mjs",
 		"./package.json": "./package.json"
@@ -30,13 +31,6 @@
 	],
 	"author": "Matteo Gabriele <m.gabriele.dev@gmail.com>",
 	"license": "MIT",
-	"devEngines": {
-		"packageManager": {
-			"name": "pnpm",
-			"version": "^11.17.0",
-			"onFail": "download"
-		}
-	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.6",
 		"@types/node": "^26.1.2",
