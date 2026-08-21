@@ -6,7 +6,8 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": ["**", "!dist", "!**/*.tsbuildinfo"]
 	},
 	"formatter": {
 		"enabled": true,
