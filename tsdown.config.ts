@@ -2,9 +2,7 @@ import { defineConfig } from "tsdown";
 
 export default defineConfig({
 	exports: true,
-	deps: {
-		alwaysBundle: [],
-	},
+	minify: true,
 	publint: true,
-	dts: { entry: ["src/index.ts"] },
+	dts: true,
 });
