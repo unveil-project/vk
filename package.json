@@ -1,7 +1,7 @@
 {
 	"name": "@unveil/vk",
 	"version": "0.1.0",
-	"description": "",
+	"description": "Automation-pattern analysis for GitHub accounts",
 	"type": "module",
 	"exports": {
 		".": "./dist/index.mjs",
@@ -11,16 +11,25 @@
 	"files": [
 		"dist"
 	],
+
 	"scripts": {
 		"test": "vitest",
 		"check": "biome check",
 		"check:fix": "biome check --write",
 		"dev": "tsdown --watch",
-		"build": "tsdown"
+		"build": "tsdown",
+		"prepublishOnly": "pnpm test && pnpm check && pnpm build"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": [
+		"GitHub",
+		"ai",
+		"ai-agent",
+		"ai-detection",
+		"automation",
+		"behavioral-analysis"
+	],
+	"author": "Matteo Gabriele <m.gabriele.dev@gmail.com>",
+	"license": "MIT",
 	"devEngines": {
 		"packageManager": {
 			"name": "pnpm",
@@ -35,5 +44,9 @@
 		"tsdown": "^0.22.14",
 		"typescript": "^6.0.3",
 		"vitest": "^4.1.10"
+	},
+	"dependencies": {
+		"@unveil/identity": "^2.0.2",
+		"octokit": "^5.0.5"
 	}
 }
