@@ -1,6 +1,6 @@
 {
 	"name": "@unveil/vk",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "Automation-pattern analysis for GitHub accounts",
 	"type": "module",
 	"packageManager": "pnpm@11.22.0",
@@ -12,7 +12,6 @@
 	"files": [
 		"dist"
 	],
-
 	"scripts": {
 		"test": "vitest run",
 		"test:watch": "vitest",
