@@ -4,6 +4,8 @@ Fetch GitHub account activity and analyze it for automation patterns
 
 This is the batteries-included wrapper around [`@unveil/identity`](https://github.com/unveil-project/identity). Give it a username and it does the GitHub API calls for you, then hands the result to the scoring engine.
 
+It talks to the GitHub REST API with native `fetch` and has no dependencies beyond `@unveil/identity`, so it runs the same in Node, Deno, Bun, the browser and edge runtimes.
+
 Both packages are the logic behind [AgentScan](https://agentscan.netlify.app), a tool for analyzing GitHub account behavior to detect potential AI agents and automated activity. The results are indicators, not verdicts.
 
 ### Install
@@ -36,7 +38,7 @@ analyze(username, {
 });
 ```
 
-`token` is passed straight to Octokit. Without it you are on the unauthenticated
+`token` is sent as `Authorization: Bearer`. Without it you are on the unauthenticated
 rate limit, which is 60 requests per hour for the whole IP — and each `analyze`
 call spends 4 of them. With a token you get 5000 per hour. The token needs no
 scopes; all the data read here is public.
@@ -72,8 +74,9 @@ analysis reports lower `confidence` to match.
 ### Errors
 
 `analyze` rejects instead of returning a partial result. A missing user, a
-revoked token or an exhausted rate limit all come back as the Octokit error, so
-you can read `status` off it:
+revoked token or an exhausted rate limit all come back as a plain `Error`
+carrying GitHub's own message, with the `status` and `url` of the failed request
+attached to it:
 
 ```js
 try {
@@ -84,6 +87,8 @@ try {
   }
 }
 ```
+
+Network failures reject with whatever `fetch` threw, untouched.
 
 ### Which package do I want?
 
