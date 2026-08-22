@@ -19,7 +19,7 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
 	});
 }
 
-const user = { login: "octocat" };
+const user = { login: "octocat", id: 2 };
 const analysis = { classification: "human" } as unknown as IdentifyResult;
 
 const fetchMock = vi.fn<typeof fetch>();
@@ -113,10 +113,11 @@ describe("analyze", () => {
 		});
 	});
 
-	it("returns the analysis and the total event count", async () => {
+	it("returns the analysis, the total event count and the user id", async () => {
 		const result = await analyze("octocat");
 
 		expect(result.analysis).toBe(analysis);
+		expect(result.userId).toBe(2);
 		expect(result.eventsCount).toBe(3);
 	});
 

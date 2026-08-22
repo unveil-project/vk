@@ -14,6 +14,7 @@ export type AnalyzeReturn = {
 	analysis: IdentifyResult;
 	events: GitHubEvent[];
 	eventsCount: number;
+	userId: number;
 };
 
 const API_URL = "https://api.github.com";
@@ -96,6 +97,7 @@ export async function analyze(
 			user: profile,
 			events,
 		}),
+		userId: profile.id,
 		events: options?.showEvents ? events : [],
 		eventsCount: events.length,
 	};
