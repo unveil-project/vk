@@ -43,6 +43,6 @@
 		"vitest": "^4.1.10"
 	},
 	"dependencies": {
-		"@unveil/identity": "^2.0.2"
+		"@unveil/identity": "^2.0.4"
 	}
 }
