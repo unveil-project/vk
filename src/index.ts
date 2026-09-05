@@ -5,6 +5,8 @@ import {
 	identify,
 } from "@unveil/identity";
 
+export type { GitHubEvent, IdentifyResult };
+
 export type AnalyzeOptions = {
 	token?: string;
 	showEvents?: boolean;
