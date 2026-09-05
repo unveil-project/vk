@@ -1,6 +1,6 @@
 {
 	"name": "@unveil/vk",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"description": "Fetch GitHub account activity and analyze it for automation patterns",
 	"type": "module",
 	"packageManager": "pnpm@11.22.0",
