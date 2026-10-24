@@ -174,15 +174,15 @@ describe("analyze", () => {
 	});
 
 	it("handles a user with no public events", async () => {
-		fetchMock.mockImplementation((input) =>
-			Promise.resolve(
-				jsonResponse(
-					new URL(String(input)).pathname.endsWith("/events/public")
-						? []
-						: user,
-				),
-			),
-		);
+		fetchMock.mockImplementation((input) => {
+			const pathname = new URL(String(input)).pathname;
+
+			if (pathname.endsWith("/events/public")) {
+				return Promise.resolve(jsonResponse([]));
+			}
+
+			return Promise.resolve(jsonResponse(user));
+		});
 
 		const result = await analyze("octocat", { showEvents: true });
 
@@ -207,7 +207,7 @@ describe("analyze", () => {
 
 		const error = await analyze("ghost").catch((reason) => reason);
 
-		expect(error.name).toBe("GitHubError");
+		expect(error.name).toBe("ProviderError");
 		expect(error.status).toBe(404);
 		expect(error.url).toBe("https://api.github.com/users/ghost");
 	});
