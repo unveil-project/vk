@@ -1,9 +1,9 @@
+import { type IdentifyResult, identify } from "@unveil/identity";
 import {
+	fromGitHub,
 	type GitHubEvent,
 	type GitHubUser,
-	type IdentifyResult,
-	identify,
-} from "@unveil/identity";
+} from "@unveil/identity/providers/github";
 
 export type { GitHubEvent, IdentifyResult };
 
@@ -16,7 +16,7 @@ export type AnalyzeReturn = {
 	analysis: IdentifyResult;
 	events: GitHubEvent[];
 	eventsCount: number;
-	userId: number;
+	userId?: number;
 };
 
 const API_URL = "https://api.github.com";
@@ -95,10 +95,12 @@ export async function analyze(
 	const events = (await Promise.all(pageRequests)).flat();
 
 	return {
-		analysis: identify({
-			user: profile,
-			events,
-		}),
+		analysis: identify(
+			fromGitHub({
+				user: profile,
+				events,
+			}),
+		),
 		userId: profile.id,
 		events: options?.showEvents ? events : [],
 		eventsCount: events.length,
