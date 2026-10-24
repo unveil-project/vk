@@ -1,5 +1,9 @@
-import type { GitHubEvent, IdentifyResult } from "@unveil/identity";
-import { identify } from "@unveil/identity";
+import { type IdentifyResult, identify } from "@unveil/identity";
+import {
+	fromGitHub,
+	type GitHubEvent,
+	type GitHubUser,
+} from "@unveil/identity/providers/github";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { analyze } from "./index";
 
@@ -19,7 +23,7 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
 	});
 }
 
-const user = { login: "octocat", id: 2 };
+const user = { login: "octocat", id: 2 } as GitHubUser;
 const analysis = { classification: "human" } as unknown as IdentifyResult;
 
 const fetchMock = vi.fn<typeof fetch>();
@@ -103,14 +107,16 @@ describe("analyze", () => {
 	it("passes the user and the flattened events to identify", async () => {
 		await analyze("octocat");
 
-		expect(identify).toHaveBeenCalledWith({
-			user,
-			events: [
-				createEvent("page-1"),
-				createEvent("page-2"),
-				createEvent("page-3"),
-			],
-		});
+		expect(identify).toHaveBeenCalledWith(
+			fromGitHub({
+				user,
+				events: [
+					createEvent("page-1"),
+					createEvent("page-2"),
+					createEvent("page-3"),
+				],
+			}),
+		);
 	});
 
 	it("returns the analysis, the total event count and the user id", async () => {
@@ -182,7 +188,7 @@ describe("analyze", () => {
 
 		expect(result.events).toEqual([]);
 		expect(result.eventsCount).toBe(0);
-		expect(identify).toHaveBeenCalledWith({ user, events: [] });
+		expect(identify).toHaveBeenCalledWith(fromGitHub({ user, events: [] }));
 	});
 
 	it("rejects when the user cannot be found", async () => {
