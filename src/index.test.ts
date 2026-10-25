@@ -119,11 +119,11 @@ describe("analyze", () => {
 		);
 	});
 
-	it("returns the analysis, the total event count and the user id", async () => {
+	it("returns the analysis, the total event count and the user", async () => {
 		const result = await analyze("octocat");
 
 		expect(result.report).toBe(analysis);
-		expect(result.userId).toBe(2);
+		expect(result.user).toEqual(user);
 		expect(result.eventsCount).toBe(3);
 	});
 

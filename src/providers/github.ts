@@ -15,7 +15,7 @@ const GITHUB_PER_PAGE = 100;
 export async function fetchGitHub(
 	username: string,
 	token?: string,
-): Promise<Fetched<GitHubEvent>> {
+): Promise<Fetched<GitHubEvent, GitHubUser>> {
 	const user = encodeURIComponent(username);
 	const headers = withToken(token, {
 		Accept: "application/vnd.github+json",
@@ -44,6 +44,6 @@ export async function fetchGitHub(
 	return {
 		input: fromGitHub({ user: profile, events }),
 		events,
-		userId: profile.id,
+		user: profile,
 	};
 }

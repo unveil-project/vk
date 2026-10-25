@@ -1,7 +1,7 @@
 import type { IdentifyInput } from "@unveil/identity";
 
-export type Fetched<Event> = {
+export type Fetched<Event, User> = {
 	input: IdentifyInput;
 	events: Event[];
-	userId?: number | string;
+	user: User;
 };

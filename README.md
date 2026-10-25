@@ -58,6 +58,7 @@ when all you wanted was the score.
   analysis,     // the full IdentifyResult from @unveil/identity
   events,       // the raw events, or [] unless showEvents is set
   eventsCount,  // always the real count, even when events is empty
+  user,         // the provider's user profile, as fetched
 }
 ```
 
