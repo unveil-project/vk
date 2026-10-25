@@ -1,10 +1,10 @@
-import { type IdentifyResult, identify } from "@unveil/identity";
 import type { GitHubEvent } from "@unveil/identity/providers/github";
+import { type IdentityReport, report } from "@unveil/identity/report";
 import { ProviderError } from "./http";
 import { fetchGitHub } from "./providers/github";
 import type { Fetched } from "./providers/shared";
 
-export type { GitHubEvent, IdentifyResult };
+export type { GitHubEvent, IdentityReport };
 
 export { ProviderError };
 
@@ -19,7 +19,7 @@ export type AnalyzeOptions = {
 };
 
 export type AnalyzeReturn = {
-	analysis: IdentifyResult;
+	report: IdentityReport;
 	events: ProviderEvent[];
 	eventsCount: number;
 	userId?: number | string;
@@ -47,7 +47,7 @@ export async function analyze(
 	);
 
 	return {
-		analysis: identify(input),
+		report: report(input),
 		userId,
 		events: options?.showEvents ? events : [],
 		eventsCount: events.length,
