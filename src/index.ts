@@ -38,7 +38,7 @@ export async function analyze(
 	username: string,
 	options?: AnalyzeOptions,
 ): Promise<AnalyzeReturn> {
-	const provider = options?.provider ?? "github";
+	const provider: Provider = options?.provider ?? "github";
 	const fetchProvider = providers[provider];
 
 	const { input, events, userId } = await fetchProvider(
