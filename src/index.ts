@@ -1,32 +1,16 @@
 import { type IdentifyResult, identify } from "@unveil/identity";
-import type { CodebergActivity } from "@unveil/identity/providers/codeberg";
 import type { GitHubEvent } from "@unveil/identity/providers/github";
-import type { GitLabEvent } from "@unveil/identity/providers/gitlab";
-import type { TangledRecord } from "@unveil/identity/providers/tangled";
 import { ProviderError } from "./http";
-import { fetchCodeberg } from "./providers/codeberg";
 import { fetchGitHub } from "./providers/github";
-import { fetchGitLab } from "./providers/gitlab";
 import type { Fetched } from "./providers/shared";
-import { fetchTangled } from "./providers/tangled";
 
-export type {
-	CodebergActivity,
-	GitHubEvent,
-	GitLabEvent,
-	IdentifyResult,
-	TangledRecord,
-};
+export type { GitHubEvent, IdentifyResult };
 
 export { ProviderError };
 
-export type Provider = "github" | "gitlab" | "codeberg" | "tangled";
+export type Provider = "github";
 
-export type ProviderEvent =
-	| GitHubEvent
-	| GitLabEvent
-	| CodebergActivity
-	| TangledRecord;
+export type ProviderEvent = GitHubEvent;
 
 export type AnalyzeOptions = {
 	token?: string;
@@ -48,9 +32,6 @@ type ProviderFetch = (
 
 const providers: Record<Provider, ProviderFetch> = {
 	github: fetchGitHub,
-	gitlab: fetchGitLab,
-	codeberg: fetchCodeberg,
-	tangled: fetchTangled,
 };
 
 export async function analyze(

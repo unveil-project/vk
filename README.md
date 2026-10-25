@@ -33,17 +33,14 @@ console.log(eventsCount);             // how many events we actually got back
 
 ```js
 analyze(username, {
-  provider: "gitlab", // "github" (default), "gitlab", "codeberg" or "tangled"
+  provider: "github", // "github" (default) is the only provider for now
   token: "ghp_...",   // provider token. Optional, but strongly recommended
   showEvents: true,   // return the raw events too. Off by default
 });
 ```
 
-`provider` picks where the account lives: `github` (api.github.com),
-`gitlab` (gitlab.com), `codeberg` (codeberg.org) or `tangled` (resolved through
-AT Protocol). Leave it out and it is GitHub. GitLab.com only returns a user's
-sign-up date to authenticated requests, so `gitlab` needs a token. Tangled
-records are public and no token is sent.
+`provider` picks where the account lives. Only `github` (api.github.com) is
+supported right now, and it is the default, so you can leave it out.
 
 `token` is sent as `Authorization: Bearer`. Without it you are on the unauthenticated
 rate limit, which is 60 requests per hour for the whole IP — and each `analyze`
