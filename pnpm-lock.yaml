@@ -214,8 +214,8 @@ importers:
         specifier: ^26.1.2
         version: 26.1.2
       '@unveil/identity':
-        specifier: ^2.0.4
-        version: 2.0.4
+        specifier: 3.0.0
+        version: 3.0.0
       publint:
         specifier: ^0.3.22
         version: 0.3.22
@@ -432,8 +432,8 @@ packages:
   '@types/node@26.1.2':
     resolution: {integrity: sha512-Vu4a5UFA9rIIFJ7rB/Vaafh9lrCQszopTCx6KjFboXTGQbPNasehVR5TEiithSDGyd1DEiUByggTZsg8jukeIg==}
 
-  '@unveil/identity@2.0.4':
-    resolution: {integrity: sha512-cLH3Lm4daCBVKDQooCp+4y6DfUtadWrWEJ3DFG8ok0/KZjBzYjstnMXO0bzvb2KQv2eugRoEr+ndraDt6ghr8w==}
+  '@unveil/identity@3.0.0':
+    resolution: {integrity: sha512-K12WL5AS7s9FXiY46TCZIMS/Y9RCU0DISs9K2G4ZkOCN3K9E4axG1XrNGYw6G6SrmRtWnZT3kPO+hFnYE055Dw==}
 
   '@vitest/expect@4.1.10':
     resolution: {integrity: sha512-YsCn+qAk1GWjQOWFEsEcL2gNQ0zmVmQu3T03qP6UyjhtmdtwtbuI+DASn/7iQB3HGTXkdBwGddzxPlmiql5vlA==}
@@ -1134,7 +1134,7 @@ snapshots:
     dependencies:
       undici-types: 8.3.0
 
-  '@unveil/identity@2.0.4': {}
+  '@unveil/identity@3.0.0': {}
 
   '@vitest/expect@4.1.10':
     dependencies:

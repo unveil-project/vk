@@ -33,10 +33,14 @@ console.log(eventsCount);             // how many events we actually got back
 
 ```js
 analyze(username, {
-  token: "ghp_...",   // GitHub token. Optional, but strongly recommended
+  provider: "github", // "github" (default) is the only provider for now
+  token: "ghp_...",   // provider token. Optional, but strongly recommended
   showEvents: true,   // return the raw events too. Off by default
 });
 ```
+
+`provider` picks where the account lives. Only `github` (api.github.com) is
+supported right now, and it is the default, so you can leave it out.
 
 `token` is sent as `Authorization: Bearer`. Without it you are on the unauthenticated
 rate limit, which is 60 requests per hour for the whole IP — and each `analyze`
@@ -54,6 +58,7 @@ when all you wanted was the score.
   analysis,     // the full IdentifyResult from @unveil/identity
   events,       // the raw events, or [] unless showEvents is set
   eventsCount,  // always the real count, even when events is empty
+  user,         // the provider's user profile, as fetched
 }
 ```
 
@@ -75,7 +80,7 @@ analysis reports lower `confidence` to match.
 
 `analyze` rejects instead of returning a partial result. A missing user, a
 revoked token or an exhausted rate limit all come back as a plain `Error`
-carrying GitHub's own message, with the `status` and `url` of the failed request
+carrying the provider's own message, with the `status` and `url` of the failed request
 attached to it:
 
 ```js

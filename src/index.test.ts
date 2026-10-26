@@ -1,10 +1,14 @@
-import type { GitHubEvent, IdentifyResult } from "@unveil/identity";
-import { identify } from "@unveil/identity";
+import {
+	fromGitHub,
+	type GitHubEvent,
+	type GitHubUser,
+} from "@unveil/identity/providers/github";
+import { type Report, report } from "@unveil/identity/report";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { analyze } from "./index";
 
-vi.mock("@unveil/identity", () => ({
-	identify: vi.fn(),
+vi.mock("@unveil/identity/report", () => ({
+	report: vi.fn(),
 }));
 
 function createEvent(id: string): GitHubEvent {
@@ -19,8 +23,8 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
 	});
 }
 
-const user = { login: "octocat", id: 2 };
-const analysis = { classification: "human" } as unknown as IdentifyResult;
+const user = { login: "octocat", id: 2 } as GitHubUser;
+const analysis = { classification: "human" } as unknown as Report;
 
 const fetchMock = vi.fn<typeof fetch>();
 
@@ -49,7 +53,7 @@ beforeEach(() => {
 		return Promise.resolve(jsonResponse(user));
 	});
 
-	vi.mocked(identify).mockReturnValue(analysis);
+	vi.mocked(report).mockReturnValue(analysis);
 });
 
 describe("analyze", () => {
@@ -103,21 +107,23 @@ describe("analyze", () => {
 	it("passes the user and the flattened events to identify", async () => {
 		await analyze("octocat");
 
-		expect(identify).toHaveBeenCalledWith({
-			user,
-			events: [
-				createEvent("page-1"),
-				createEvent("page-2"),
-				createEvent("page-3"),
-			],
-		});
+		expect(report).toHaveBeenCalledWith(
+			fromGitHub({
+				user,
+				events: [
+					createEvent("page-1"),
+					createEvent("page-2"),
+					createEvent("page-3"),
+				],
+			}),
+		);
 	});
 
-	it("returns the analysis, the total event count and the user id", async () => {
+	it("returns the analysis, the total event count and the user", async () => {
 		const result = await analyze("octocat");
 
-		expect(result.analysis).toBe(analysis);
-		expect(result.userId).toBe(2);
+		expect(result.report).toBe(analysis);
+		expect(result.user).toEqual(user);
 		expect(result.eventsCount).toBe(3);
 	});
 
@@ -168,21 +174,21 @@ describe("analyze", () => {
 	});
 
 	it("handles a user with no public events", async () => {
-		fetchMock.mockImplementation((input) =>
-			Promise.resolve(
-				jsonResponse(
-					new URL(String(input)).pathname.endsWith("/events/public")
-						? []
-						: user,
-				),
-			),
-		);
+		fetchMock.mockImplementation((input) => {
+			const pathname = new URL(String(input)).pathname;
+
+			if (pathname.endsWith("/events/public")) {
+				return Promise.resolve(jsonResponse([]));
+			}
+
+			return Promise.resolve(jsonResponse(user));
+		});
 
 		const result = await analyze("octocat", { showEvents: true });
 
 		expect(result.events).toEqual([]);
 		expect(result.eventsCount).toBe(0);
-		expect(identify).toHaveBeenCalledWith({ user, events: [] });
+		expect(report).toHaveBeenCalledWith(fromGitHub({ user, events: [] }));
 	});
 
 	it("rejects when the user cannot be found", async () => {
@@ -191,7 +197,7 @@ describe("analyze", () => {
 		);
 
 		await expect(analyze("ghost")).rejects.toThrow("Not Found");
-		expect(identify).not.toHaveBeenCalled();
+		expect(report).not.toHaveBeenCalled();
 	});
 
 	it("exposes the status and url on the rejection", async () => {
@@ -201,7 +207,7 @@ describe("analyze", () => {
 
 		const error = await analyze("ghost").catch((reason) => reason);
 
-		expect(error.name).toBe("GitHubError");
+		expect(error.name).toBe("ProviderError");
 		expect(error.status).toBe(404);
 		expect(error.url).toBe("https://api.github.com/users/ghost");
 	});
@@ -235,6 +241,6 @@ describe("analyze", () => {
 		});
 
 		await expect(analyze("octocat")).rejects.toThrow("API rate limit exceeded");
-		expect(identify).not.toHaveBeenCalled();
+		expect(report).not.toHaveBeenCalled();
 	});
 });
