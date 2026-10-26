@@ -2,12 +2,12 @@ import type {
 	GitHubEvent,
 	GitHubUser,
 } from "@unveil/identity/providers/github";
-import { type IdentityReport, report } from "@unveil/identity/report";
+import { type Report, report } from "@unveil/identity/report";
 import { ProviderError } from "./http";
 import { fetchGitHub } from "./providers/github";
 import type { Fetched } from "./providers/shared";
 
-export type { GitHubEvent, GitHubUser, IdentityReport };
+export type { GitHubEvent, GitHubUser, Report };
 
 export { ProviderError };
 
@@ -24,7 +24,7 @@ export type AnalyzeOptions = {
 };
 
 export type AnalyzeReturn = {
-	report: IdentityReport;
+	report: Report;
 	events: ProviderEvent[];
 	eventsCount: number;
 	user: ProviderUser;

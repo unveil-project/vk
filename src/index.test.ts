@@ -3,7 +3,7 @@ import {
 	type GitHubEvent,
 	type GitHubUser,
 } from "@unveil/identity/providers/github";
-import { type IdentityReport, report } from "@unveil/identity/report";
+import { type Report, report } from "@unveil/identity/report";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { analyze } from "./index";
 
@@ -24,7 +24,7 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
 }
 
 const user = { login: "octocat", id: 2 } as GitHubUser;
-const analysis = { classification: "human" } as unknown as IdentityReport;
+const analysis = { classification: "human" } as unknown as Report;
 
 const fetchMock = vi.fn<typeof fetch>();
 
